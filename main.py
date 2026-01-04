@@ -2,11 +2,9 @@ import streamlit as st
 import edge_tts
 import asyncio
 
-# --- Page Setup (App jaisa look) ---
+# --- Page Setup ---
 st.set_page_config(page_title="Neerja Voice App", page_icon="🎙️")
-s
 st.title("🎙️ AI Voice Generator")
-st.write("Likho, Click karo, aur Download karo.")
 
 # --- Inputs ---
 text = st.text_area("Yahan Script Likho:", height=150, placeholder="Hello dosto...")
@@ -29,18 +27,20 @@ if st.button("🔊 Generate Audio", type="primary"):
     else:
         # Settings set karo
         voice_key = "en-IN-NeerjaNeural" if "Female" in gender else "en-IN-PrabhatNeural"
+        
+        # Format fix for API
         rate_str = f"{speed:+d}%"
         pitch_str = f"{pitch:+d}Hz"
 
         with st.spinner("Generating..."):
             try:
-                # Async loop chalao
+                # Async loop logic for Cloud
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 loop.run_until_complete(generate_audio(text, voice_key, rate_str, pitch_str))
                 
-                # Success & Audio Player
-                st.success("Done!")
+                # Success
+                st.success("Audio Ban Gaya! ✅")
                 st.audio("output_audio.mp3", format="audio/mp3")
                 
                 # Download Button
